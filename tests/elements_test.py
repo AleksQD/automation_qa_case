@@ -1,6 +1,7 @@
 
+import time
 import pytest
-from ..pages.elemets_page import CheckBoxPage, TextBoxPage
+from ..pages.elemets_page import CheckBoxPage, RadioButtonPage, TextBoxPage
 
 
 class TestElements:
@@ -16,6 +17,7 @@ class TestElements:
             assert curr_address == out_curr_add, 'the current address does not match'
             assert perm_address == out_perm_add, 'the permanent address does not match'
 
+    @pytest.mark.skip
     class TestCheckBox:
         def test_check_box(self, driver):
             check_box_page = CheckBoxPage(
@@ -26,3 +28,12 @@ class TestElements:
             input_checkbox = check_box_page.get_checked_checkboxes()
             output_result = check_box_page.get_output_result()
             assert input_checkbox == output_result, 'checkboxes have not been selected'
+
+    class TestRadioButton:
+        def test_radio_button(self, driver):
+            radio_button_page = RadioButtonPage(
+                driver, 'https://demoqa.com/radio-button')
+            radio_button_page.open()
+            click_button = radio_button_page.click_random_radio_button()
+            output_result = radio_button_page.get_output_result()
+            assert click_button == output_result, 'radio-button have not been selected(maybe: random choose the "NO"button  - it is disabled)'
