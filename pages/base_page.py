@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
 
 
 class BasePage:
@@ -30,3 +31,6 @@ class BasePage:
 
     def go_to_element(self, element):
         self.driver.execute_script("arguments[0].scrollIntoView;", element)
+
+    def select_by_value(self, select, value):
+        return Select(select).select_by_value(value)

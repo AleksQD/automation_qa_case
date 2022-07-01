@@ -1,7 +1,8 @@
 
 import random
+import time
 
-from requests import delete
+
 from ..generator.generator import generated_person
 from ..locators.elemets_page_locator import CheckBoxPageLocators, RadioButtonPageLocators, TextBoxPageLocators, WebTablePageLocators
 from .base_page import BasePage
@@ -118,7 +119,6 @@ class WebTablePage(BasePage):
         for item in person_list:
             data.append(item.text.splitlines())
         return data
-    
 
     def search_some_person(self, keyword):
         self.element_is_visible(self.locators.SEARCH_INPUT).send_keys(keyword)
@@ -127,3 +127,34 @@ class WebTablePage(BasePage):
         delete_button = self.element_is_present(self.locators.DELETE_BUTTON)
         row = delete_button.find_element('xpath', self.locators.ROW_PARENT)
         return row.text.splitlines()
+
+    def update_person_info(self):
+        person_info = next(generated_person())
+        age = person_info.age
+        self.element_is_visible(self.locators.UPDATE_BUTTON).click()
+        self.element_is_visible(self.locators.AGE_INPUT).clear()
+        self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
+        self.element_is_visible(self.locators.SUBMIT).click()
+        return str(age)
+
+    def delete_person(self):
+        self.element_is_visible(self.locators.DELETE_BUTTON).click()
+
+    def check_deleted(self):
+        return self.element_is_present(self.locators.NO_ROWS_FOUND).text
+
+    def select_up_to_some_rows(self):
+        count = [5, 10, 20, 25, 50, 100]
+        data = []
+        for i in count:
+            count_row_button = self.element_is_visible(
+                self.locators.COUNT_ROWS)
+            self.go_to_element(count_row_button)
+            count_row_button.click()
+            self.select_by_value(count_row_button, str(i))
+            data.append(self.check_rows_count())
+        return data
+
+    def check_rows_count(self):
+        list_rows = self.elements_are_present(self.locators.FULL_PEOPLE_LIST)
+        return len(list_rows)
