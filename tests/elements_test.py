@@ -1,8 +1,9 @@
 
+
 import random
 import time
 import pytest
-from ..pages.elemets_page import CheckBoxPage, RadioButtonPage, TextBoxPage, WebTablePage
+from ..pages.elemets_page import ButtonsPage, CheckBoxPage, RadioButtonPage, TextBoxPage, WebTablePage
 
 
 class TestElements:
@@ -90,3 +91,14 @@ class TestElements:
             rows = web_table_page.select_up_to_some_rows()
             assert rows == [
                 5, 10, 20, 25, 50, 100], "The number of rows in table has not been changed"
+
+    class TestButtonsPage:
+        def test_different_click_buttons(self, driver):
+            buttons_page = ButtonsPage(driver, 'https://demoqa.com/buttons')
+            buttons_page.open()
+            double = buttons_page.double_click_on_button()
+            right = buttons_page.right_click_on_button()
+            one = buttons_page.one_click_on_button()
+            assert double == "You have done a double click", "The double_click_me  button was not pressed"
+            assert right == "You have done a right click", "The right_click_me button was not pressed"
+            assert one == "You have done a dynamic click", "The click_me button was not pressed"

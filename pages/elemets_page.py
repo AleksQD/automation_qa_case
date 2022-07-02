@@ -4,7 +4,7 @@ import time
 
 
 from ..generator.generator import generated_person
-from ..locators.elemets_page_locator import CheckBoxPageLocators, RadioButtonPageLocators, TextBoxPageLocators, WebTablePageLocators
+from ..locators.elemets_page_locator import ButtonsPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, TextBoxPageLocators, WebTablePageLocators
 from .base_page import BasePage
 
 
@@ -158,3 +158,24 @@ class WebTablePage(BasePage):
     def check_rows_count(self):
         list_rows = self.elements_are_present(self.locators.FULL_PEOPLE_LIST)
         return len(list_rows)
+
+
+class ButtonsPage(BasePage):
+    locators = ButtonsPageLocators()
+
+    def double_click_on_button(self):
+        self.action_double_click(self.element_is_visible(
+            self.locators.DOUBLE_CLICK_BUTTON))
+        return self.check_clicked_on_button(self.locators.MASSAGE_DOUBLE_CLICK)
+
+    def right_click_on_button(self):
+        self.action_right_click(self.element_is_visible(
+            self.locators.RIGHT_CLICK_BUTTON))
+        return self.check_clicked_on_button(self.locators.MASSAGE_RIGHT_CLICK)
+
+    def one_click_on_button(self):
+        self.element_is_visible(self.locators.CLICK_ME_BUTTON).click()
+        return self.check_clicked_on_button(self.locators.MASSAGE_CLICK_ME)
+
+    def check_clicked_on_button(self, element):
+        return self.element_is_present(element).text
