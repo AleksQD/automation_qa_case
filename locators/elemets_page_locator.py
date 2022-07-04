@@ -64,3 +64,22 @@ class ButtonsPageLocators:
     MASSAGE_DOUBLE_CLICK = (By.CSS_SELECTOR, 'p[id="doubleClickMessage"]')
     MASSAGE_RIGHT_CLICK = (By.CSS_SELECTOR, 'p[id="rightClickMessage"]')
     MASSAGE_CLICK_ME = (By.CSS_SELECTOR, 'p[id="dynamicClickMessage"]')
+
+
+class LinksPageLocators:
+    # new tab links
+
+    HOME_LINK = (By.CSS_SELECTOR, 'a[id="simpleLink"]')
+    DINAMIC_HOME_LINK = (By.CSS_SELECTOR, 'a[id="dinamikLink"]')
+
+    # api call links
+
+    CREATED_LINK = (By.CSS_SELECTOR, 'a[id="created"]')
+    NO_CONTENT_LINK = (By.CSS_SELECTOR, 'a[id="no-content"]')
+    MOVED_LINK = (By.CSS_SELECTOR, 'a[id="moved"]')
+    BAD_REQUEST_LINK = (By.CSS_SELECTOR, 'a[id="bad-request"]')
+    UNAUTHORIZED_LINK = (By.CSS_SELECTOR, 'a[id="unauthorized"]')
+    FORBIDDEN_LINK = (By.CSS_SELECTOR, 'a[id="forbidden"]')
+    NOT_FOUND_LINK = (By.CSS_SELECTOR, 'a[id="invalid-url"]')
+
+    RESULT_STATUS_CODE = (By.XPATH, '//*[@id="linkResponse"]/b[1]')

@@ -3,7 +3,7 @@
 import random
 import time
 import pytest
-from ..pages.elemets_page import ButtonsPage, CheckBoxPage, RadioButtonPage, TextBoxPage, WebTablePage
+from ..pages.elemets_page import ButtonsPage, CheckBoxPage, LinksPage, RadioButtonPage, TextBoxPage, WebTablePage
 
 
 class TestElements:
@@ -92,6 +92,7 @@ class TestElements:
             assert rows == [
                 5, 10, 20, 25, 50, 100], "The number of rows in table has not been changed"
 
+    @pytest.mark.skip
     class TestButtonsPage:
         def test_different_click_buttons(self, driver):
             buttons_page = ButtonsPage(driver, 'https://demoqa.com/buttons')
@@ -102,3 +103,23 @@ class TestElements:
             assert double == "You have done a double click", "The double_click_me  button was not pressed"
             assert right == "You have done a right click", "The right_click_me button was not pressed"
             assert one == "You have done a dynamic click", "The click_me button was not pressed"
+
+    class TestLinksPage:
+        @pytest.mark.skip
+        def test_check_new_tab_link(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            href_link, current_url = links_page.check_new_tab_simple_link()
+            assert href_link == current_url, "The link is broken or url is incorrect"
+
+        @pytest.mark.skip
+        def test_status_code(self, driver):
+            links = {'created': 201, 'no-content': 204, 'moved': 301,
+                     'bad-request': 400, 'unauthorized': 401,
+                     'forbidden': 403, 'invalid-url': 404}
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            for key, value in links.items():
+                response_code = links_page.check_status_code_link(
+                    f'https://demoqa.com/{key}')
+                assert response_code == value, 'Status code wrong'
