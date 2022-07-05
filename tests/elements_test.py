@@ -3,7 +3,7 @@
 import random
 import time
 import pytest
-from ..pages.elemets_page import ButtonsPage, CheckBoxPage, LinksPage, RadioButtonPage, TextBoxPage, WebTablePage
+from ..pages.elemets_page import ButtonsPage, CheckBoxPage, LinksPage, RadioButtonPage, TextBoxPage, UploadDownloadPage, WebTablePage
 
 
 class TestElements:
@@ -16,8 +16,8 @@ class TestElements:
             out_name, out_email, out_curr_add, out_perm_add = text_box_page.check_filled_form()
             assert full_name == out_name, 'the full name does not match'
             assert email == out_email, 'the email does not match'
-            assert curr_address == out_curr_add, 'the current address does not match'
-            assert perm_address == out_perm_add, 'the permanent address does not match'
+            assert curr_address == out_curr_add, "The current address does not match"
+            assert perm_address == out_perm_add, "The permanent address does not match"
 
     @pytest.mark.skip
     class TestCheckBox:
@@ -29,7 +29,7 @@ class TestElements:
             check_box_page.click_random_checkbox()
             input_checkbox = check_box_page.get_checked_checkboxes()
             output_result = check_box_page.get_output_result()
-            assert input_checkbox == output_result, 'checkboxes have not been selected'
+            assert input_checkbox == output_result, "Checkboxes have not been selected"
 
     @pytest.mark.skip
     class TestRadioButton:
@@ -39,7 +39,7 @@ class TestElements:
             radio_button_page.open()
             click_button = radio_button_page.click_random_radio_button()
             output_result = radio_button_page.get_output_result()
-            assert click_button == output_result, 'radio-button have not been selected(maybe: random choose the "NO"button  - it is disabled)'
+            assert click_button == output_result, "Radio-button have not been selected(maybe: random choose the NO_button  - it is disabled)"
 
     class TestWebTable:
         @pytest.mark.skip
@@ -122,4 +122,20 @@ class TestElements:
             for key, value in links.items():
                 response_code = links_page.check_status_code_link(
                     f'https://demoqa.com/{key}')
-                assert response_code == value, 'Status code wrong'
+                assert response_code == value, "Status code wrong"
+
+    class TestUploadDownloadPage:
+        @pytest.mark.skip
+        def test_check_upload_file(self, driver):
+            upload_page = UploadDownloadPage(
+                driver, 'https://demoqa.com/upload-download')
+            upload_page.open()
+            file_name, result = upload_page.upload_file()
+            assert file_name == result, "The file has not been uploaded"
+
+        def test_check_dounload_file(self, driver):
+            dounload_page = UploadDownloadPage(
+                driver, 'https://demoqa.com/upload-download')
+            dounload_page.open()
+            check = dounload_page.download_file()
+            assert check is True, "The file has not been downloaded"

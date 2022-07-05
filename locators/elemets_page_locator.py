@@ -83,3 +83,9 @@ class LinksPageLocators:
     NOT_FOUND_LINK = (By.CSS_SELECTOR, 'a[id="invalid-url"]')
 
     RESULT_STATUS_CODE = (By.XPATH, '//*[@id="linkResponse"]/b[1]')
+
+
+class UploadDownloadPageLocators:
+    DOWNLOAD_BUTTON = (By.CSS_SELECTOR, 'a[id="downloadButton"]')
+    UPLOAD_FILE = (By.CSS_SELECTOR, 'input[id="uploadFile"]')
+    UPLOADED_RESULT = (By.CSS_SELECTOR, 'p[id="uploadedFilePath"]')
