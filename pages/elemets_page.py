@@ -1,6 +1,5 @@
 
 import base64
-from dataclasses import replace
 import os
 import random
 import time
@@ -8,7 +7,7 @@ import requests
 
 
 from ..generator.generator import generated_file, generated_person
-from ..locators.elemets_page_locator import ButtonsPageLocators, CheckBoxPageLocators, DynamicPropertiesPageLocators, LinksPageLocators, RadioButtonPageLocators, TextBoxPageLocators, UploadDownloadPageLocators, WebTablePageLocators
+from ..locators.elemets_page_locators import ButtonsPageLocators, CheckBoxPageLocators, DynamicPropertiesPageLocators, LinksPageLocators, RadioButtonPageLocators, TextBoxPageLocators, UploadDownloadPageLocators, WebTablePageLocators
 from .base_page import BasePage
 from selenium.common.exceptions import TimeoutException
 
@@ -249,7 +248,7 @@ class DynamicPropertiesPage(BasePage):
 
     def check_appear_button(self):
         try:
-            self.element_is_visible(self.locators.VISIBLE_AFTER_BUTTON,6)
+            self.element_is_visible(self.locators.VISIBLE_AFTER_BUTTON, 6)
         except TimeoutException:
             return False
         return True
