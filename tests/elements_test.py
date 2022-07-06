@@ -3,7 +3,7 @@
 import random
 import time
 import pytest
-from ..pages.elemets_page import ButtonsPage, CheckBoxPage, LinksPage, RadioButtonPage, TextBoxPage, UploadDownloadPage, WebTablePage
+from ..pages.elemets_page import ButtonsPage, CheckBoxPage, DynamicPropertiesPage, LinksPage, RadioButtonPage, TextBoxPage, UploadDownloadPage, WebTablePage
 
 
 class TestElements:
@@ -133,9 +133,36 @@ class TestElements:
             file_name, result = upload_page.upload_file()
             assert file_name == result, "The file has not been uploaded"
 
+        @pytest.mark.skip
         def test_check_dounload_file(self, driver):
             dounload_page = UploadDownloadPage(
                 driver, 'https://demoqa.com/upload-download')
             dounload_page.open()
             check = dounload_page.download_file()
             assert check is True, "The file has not been downloaded"
+
+    class TestDynamicPropertiesPage:
+
+        @pytest.mark.skip
+        def test_check_enable_button(self, driver):
+            dynamic_page = DynamicPropertiesPage(
+                driver, 'https://demoqa.com/dynamic-properties')
+            dynamic_page.open()
+            enable = dynamic_page.check_enable_button()
+            assert enable is True, "Button did not enable after 5 second"
+
+        @pytest.mark.skip
+        def test_dinamic_properties(self, driver):
+            dynamic_page = DynamicPropertiesPage(
+                driver, 'https://demoqa.com/dynamic-properties')
+            dynamic_page.open()
+            color_before, color_after = dynamic_page.check_chenged_of_color()
+            assert color_before != color_after, "Colors have not been changed"
+
+        @pytest.mark.skip
+        def test_appear_button(self, driver):
+            dynamic_page = DynamicPropertiesPage(
+                driver, 'https://demoqa.com/dynamic-properties')
+            dynamic_page.open()
+            appeard = dynamic_page.check_appear_button()
+            assert appeard is True, "Button did not appear after 5 second"
