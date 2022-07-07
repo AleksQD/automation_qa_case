@@ -10,6 +10,7 @@ class Person:
     email: str = None
     age: int = None
     salary: int = None
+    mobile: str = None
     department: str = None
     email: str = None
     current_address: str = None

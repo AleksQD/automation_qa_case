@@ -16,7 +16,8 @@ def generated_person():
         department=faker.job(),
         email=faker.email(),
         current_address=faker.address(),
-        permanent_address=faker.address()
+        permanent_address=faker.address(),
+        mobile=faker.msisdn()
     )
 
 
