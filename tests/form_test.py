@@ -2,6 +2,7 @@ import pytest
 from ..pages.form_page import FormPage
 
 
+@pytest.mark.skip
 class TestForm:
     class TestFormPage:
         def test_form(self, driver):
