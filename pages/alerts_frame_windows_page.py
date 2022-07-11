@@ -4,7 +4,7 @@ import time
 from turtle import width
 from selenium.webdriver import Keys
 from ..generator.generator import generated_file, generated_person
-from ..locators.alerts_frame_windows_page_locators import AlertsPageLocators, BrowserWindowsPageLocators, FramesPageLocators
+from ..locators.alerts_frame_windows_page_locators import AlertsPageLocators, BrowserWindowsPageLocators, FramesPageLocators, NestedFramesPageLocators
 from .base_page import BasePage
 
 
@@ -83,3 +83,17 @@ class FramesPage(BasePage):
 			text = self.element_is_present(self.locators.TITLE_NEW_FRAME).text
 			self.switch_to_default_content()
 			return [text, width, height]
+
+
+class NestedFramesPage(BasePage):
+	locators = NestedFramesPageLocators()
+
+	def check_nested_frame(self):
+		parent_frame = self.element_is_present(self.locators.PARENT_FRAME)
+		self.switch_to_frame(parent_frame)
+		parent_text = self.element_is_present(self.locators.PARENT_TEXT).text
+		child_frame = self.element_is_present(self.locators.CHILD_FRAME)
+		self.switch_to_frame(child_frame)
+		child_text = self.element_is_present(self.locators.CHILD_TEXT).text
+		return parent_text, child_text
+
