@@ -51,3 +51,9 @@ class BasePage:
 
     def switch_to_alert(self):
         return self.driver.switch_to.alert
+
+    def switch_to_frame(self,web_element):
+        return self.driver.switch_to.frame(web_element)
+
+    def switch_to_default_content(self):
+        self.driver.switch_to.default_content()
