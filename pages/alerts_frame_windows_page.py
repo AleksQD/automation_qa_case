@@ -1,9 +1,10 @@
 import os
 import random
 import time
+from turtle import width
 from selenium.webdriver import Keys
 from ..generator.generator import generated_file, generated_person
-from ..locators.alerts_frame_windows_page_locators import AlertsPageLocators, BrowserWindowsPageLocators
+from ..locators.alerts_frame_windows_page_locators import AlertsPageLocators, BrowserWindowsPageLocators, FramesPageLocators
 from .base_page import BasePage
 
 
@@ -59,3 +60,26 @@ class AlertsPage(BasePage):
 		alert.accept()
 		text_result = self.element_is_present(self.locators.PROMPT_RESULT).text
 		return text, text_result
+
+
+class FramesPage(BasePage):
+	locators = FramesPageLocators()
+
+	def check_frame(self, frame_num):
+		if frame_num == 'frame1':
+			frame = self.element_is_visible(self.locators.FIRST_FRAME)
+			width = frame.get_attribute('width')
+			height = frame.get_attribute('height')
+			self.switch_to_frame(frame)
+			text = self.element_is_present(self.locators.TITLE_NEW_FRAME).text
+			self.switch_to_default_content()
+			return [text, width, height]
+		
+		if frame_num == 'frame2':
+			frame = self.element_is_visible(self.locators.SECOND_FRAME)
+			width = frame.get_attribute('width')
+			height = frame.get_attribute('height')
+			self.switch_to_frame(frame)
+			text = self.element_is_present(self.locators.TITLE_NEW_FRAME).text
+			self.switch_to_default_content()
+			return [text, width, height]

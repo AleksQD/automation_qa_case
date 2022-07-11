@@ -1,6 +1,6 @@
 import pytest
 
-from ..pages.alerts_frame_windows_page import AlertsPage, BrowserWindowsPage
+from ..pages.alerts_frame_windows_page import AlertsPage, BrowserWindowsPage, FramesPage
 
 
 # @pytest.mark.skip
@@ -54,3 +54,16 @@ class TestAlertsFrameWindows:
             alert_text, resut_text = alert_page.check_prompt_alert()
             resut_text = resut_text.split()[-1]
             assert alert_text == resut_text, "Alert did not show up"
+
+    class TestFrames:
+
+        def test_see_alert(self, driver):
+            frame_page = FramesPage(
+                driver, 'https://demoqa.com/frames')
+            frame_page.open()
+            result_frame1 = frame_page.check_frame('frame1')
+            result_frame2 = frame_page.check_frame('frame2')
+            assert result_frame1 == ['This is a sample page',
+                                     '500px', '350px'], "The frame does not exist"
+            assert result_frame2 == ['This is a sample page',
+                                     '100px', '100px'], "The frame does not exist"
