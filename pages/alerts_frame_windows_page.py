@@ -1,9 +1,5 @@
-import os
 import random
 import time
-from turtle import width
-from selenium.webdriver import Keys
-from ..generator.generator import generated_file, generated_person
 from ..locators.alerts_frame_windows_page_locators import AlertsPageLocators, BrowserWindowsPageLocators, FramesPageLocators, NestedFramesPageLocators, ModalDialogsPageLocators
 from .base_page import BasePage
 
