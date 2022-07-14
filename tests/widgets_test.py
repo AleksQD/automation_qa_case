@@ -1,6 +1,6 @@
 import pytest
 
-from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage
+from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, ProgressBarPage, SliderPage
 
 
 # @pytest.mark.skip
@@ -49,15 +49,14 @@ class TestWidgets:
             color_result = auto_complite_page.check_color_in_input_single()
             assert color == color_result, "The added color are missing in the input"
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     class TestDatePicker:
-        
-        @pytest.mark.skip
+
         def test_chenge_date(self, driver):
             date_page = DatePickerPage(
                 driver, 'https://demoqa.com/date-picker')
             date_page.open()
-            default_date,result = date_page.select_date()
+            default_date, result = date_page.select_date()
             assert default_date != result, "The date has not been changed"
 
         def test_chenge_date_and_time(self, driver):
@@ -66,3 +65,22 @@ class TestWidgets:
             date_page.open()
             default_date, result = date_page.select_date_and_time()
             assert default_date != result, "The date and time has not been changed"
+
+    # @pytest.mark.skip
+    class TestSlider:
+
+        def test_chenge_date(self, driver):
+            slider_page = SliderPage(
+                driver, 'https://demoqa.com/slider')
+            slider_page.open()
+            default_value, result = slider_page.check_slider()
+            assert default_value != result, "The slider has not been changed"
+
+    
+    class TestProgressBar:
+        def test_chenge_date(self, driver):
+            slider_page = ProgressBarPage(
+                driver, 'https://demoqa.com/progress-bar')
+            slider_page.open()
+            result = slider_page.check_progress()
+            assert result > 0, "The progress has not been changed"

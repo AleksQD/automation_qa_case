@@ -4,8 +4,9 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import Keys
 
 
+
 from ..generator.generator import generated_color, generated_date
-from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators
+from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators, ProgressBarPageLocators, SliderPageLocators
 from .base_page import BasePage
 
 
@@ -138,3 +139,26 @@ class DatePickerPage(BasePage):
                 item.click()
                 break
 
+
+class SliderPage(BasePage):
+    locators = SliderPageLocators()
+
+    def check_slider(self):
+        value_before = self.element_is_visible(self.locators.SLIDER_INPUT_VALUE).get_attribute('value')
+        input = self.element_is_present(self.locators.SLIDER_INPUT)
+        self.action_drag_and_drop_by_offset(input, random.randint(0, 350), 0)      
+        value_after = self.element_is_visible(
+            self.locators.SLIDER_INPUT_VALUE).get_attribute('value')
+        return value_before, value_after
+
+
+class ProgressBarPage(BasePage):
+    locators = ProgressBarPageLocators()
+
+    def check_progress(self):
+        progress_button = self.element_is_visible(self.locators.PROGRESS_BUTTON)
+        progress_button.click()
+        time.sleep(random.randint(0,14))
+        progress_button.click()
+        result = self.element_is_present(self.locators.PROGRESS_VALUE).text
+        return int(result.replace('%', ''))
