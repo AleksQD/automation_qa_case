@@ -1,23 +1,25 @@
-from ..data.data import Color, Person
+from datetime import datetime, timedelta
+from ..data.data import Color, Date, Person
 from faker import Faker
 import random
 
-faker = Faker('ru_Ru')
+faker_ru = Faker('ru_Ru')
+faker_en = Faker('En')
 Faker.seed()
 
 
 def generated_person():
     yield Person(
-        full_name=faker.first_name() + " " + faker.last_name(),
-        firstname=faker.first_name(),
-        lastname=faker.last_name(),
+        full_name=faker_ru.first_name() + " " + faker_ru.last_name(),
+        firstname=faker_ru.first_name(),
+        lastname=faker_ru.last_name(),
         age=random.randint(10, 80),
         salary=random.randint(10000, 100000),
-        department=faker.job(),
-        email=faker.email(),
-        current_address=faker.address(),
-        permanent_address=faker.address(),
-        mobile=faker.msisdn()
+        department=faker_ru.job(),
+        email=faker_ru.email(),
+        current_address=faker_ru.address(),
+        permanent_address=faker_ru.address(),
+        mobile=faker_ru.msisdn()
     )
 
 
@@ -33,4 +35,16 @@ def generated_color():
     yield Color(
         color_name=["Red", "Blue", "Green", "Yellow", "Purple",
                     "Black", "White", "Voilet", "Indigo", "Magenta", "Aqua"]
+    )
+
+
+def generated_date():
+    end_time = datetime.strptime('23:45', '%H:%M')
+    date_list = [end_time - timedelta(minutes=x) for x in range(0, 1440, 15)]
+    time_list = list(map(lambda x: x.time().strftime('%H:%M'), date_list))
+    yield Date(
+        year=faker_en.year(),
+        month=faker_en.month_name(),
+        day=faker_en.day_of_month(),
+        time=random.choice(time_list)
     )
