@@ -36,6 +36,9 @@ class BasePage:
     def select_by_value(self, element, value):
         return Select(element).select_by_value(value)
 
+    def select_by_visible_text(self, element, value):
+        return Select(element).select_by_visible_text(value)
+
     def action_double_click(self, element):
         action = ActionChains(self.driver)
         action.double_click(element)
