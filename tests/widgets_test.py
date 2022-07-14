@@ -1,6 +1,6 @@
 import pytest
 
-from ..pages.widgets_page import AccordianPage, AutoComplitePage
+from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage
 
 
 # @pytest.mark.skip
@@ -48,3 +48,21 @@ class TestWidgets:
             color = auto_complite_page.fill_autocomplite_single_input()
             color_result = auto_complite_page.check_color_in_input_single()
             assert color == color_result, "The added color are missing in the input"
+
+    # @pytest.mark.skip
+    class TestDatePicker:
+        
+        @pytest.mark.skip
+        def test_chenge_date(self, driver):
+            date_page = DatePickerPage(
+                driver, 'https://demoqa.com/date-picker')
+            date_page.open()
+            default_date,result = date_page.select_date()
+            assert default_date != result, "The date has not been changed"
+
+        def test_chenge_date_and_time(self, driver):
+            date_page = DatePickerPage(
+                driver, 'https://demoqa.com/date-picker')
+            date_page.open()
+            default_date, result = date_page.select_date_and_time()
+            assert default_date != result, "The date and time has not been changed"
