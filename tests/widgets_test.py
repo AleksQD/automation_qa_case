@@ -1,6 +1,6 @@
 import pytest
 
-from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, ProgressBarPage, SliderPage
+from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, ProgressBarPage, SliderPage, TabsPage
 
 
 # @pytest.mark.skip
@@ -66,21 +66,43 @@ class TestWidgets:
             default_date, result = date_page.select_date_and_time()
             assert default_date != result, "The date and time has not been changed"
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     class TestSlider:
 
-        def test_chenge_date(self, driver):
+        def test_chenge_slider(self, driver):
             slider_page = SliderPage(
                 driver, 'https://demoqa.com/slider')
             slider_page.open()
             default_value, result = slider_page.check_slider()
             assert default_value != result, "The slider has not been changed"
 
-    
+    @pytest.mark.skip
     class TestProgressBar:
-        def test_chenge_date(self, driver):
-            slider_page = ProgressBarPage(
+        def test_chenge_progress(self, driver):
+            progress_page = ProgressBarPage(
                 driver, 'https://demoqa.com/progress-bar')
-            slider_page.open()
-            result = slider_page.check_progress()
+            progress_page.open()
+            result = progress_page.check_progress()
             assert result > 0, "The progress has not been changed"
+
+    @pytest.mark.skip
+    class TestTabs:
+
+        def test_tabs(self, driver):
+            tabs_page = TabsPage(
+                driver, 'https://demoqa.com/tabs')
+            tabs_page.open()
+            tabs_list = ['What', 'Origin', 'Use']
+            for tab in tabs_list:
+                tabs_title, tabs_text = tabs_page.check_tabs(tab)                
+                assert tab == tabs_title and len(
+                    tabs_text) > 0, f"Tab {tab} does not work"
+
+        @pytest.mark.xfail
+        def test_fail_tab_more(self, driver):
+            tabs_page = TabsPage(
+                driver, 'https://demoqa.com/tabs')
+            tabs_page.open()
+            tabs_title, tabs_text = tabs_page.check_tabs('More')
+            assert tabs_title == 'More' and len(
+                tabs_text) > 0, "Tab More does not work"

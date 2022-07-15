@@ -6,7 +6,7 @@ from selenium.webdriver import Keys
 
 
 from ..generator.generator import generated_color, generated_date
-from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators, ProgressBarPageLocators, SliderPageLocators
+from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators, ProgressBarPageLocators, SliderPageLocators, TabsPageLocators
 from .base_page import BasePage
 
 
@@ -162,3 +162,23 @@ class ProgressBarPage(BasePage):
         progress_button.click()
         result = self.element_is_present(self.locators.PROGRESS_VALUE).text
         return int(result.replace('%', ''))
+
+
+class TabsPage(BasePage):
+    locators = TabsPageLocators()
+
+    def check_tabs(self,tabs_name):
+        tabs_dict = {'What':{'title':self.locators.TAB_TITLE_WHAT,
+                    'content':self.locators.TAB_TEXT_WHAT},
+                     'Origin': {'title': self.locators.TAB_TITLE_ORIGIN, 'content': self.locators.TAB_TEXT_ORIGIN},
+                     'Use': {'title': self.locators.TAB_TITLE_USE, 'content': self.locators.TAB_TEXT_USE},
+                     'More': {'title': self.locators.TAB_TITLE_USE, 'content': self.locators.TAB_TEXT_USE}
+        }
+        try:
+            self.element_is_visible(tabs_dict[tabs_name]['title']).click()
+            tabs_title = self.element_is_visible(tabs_dict[tabs_name]['title']).text
+            tabs_text = self.element_is_visible(tabs_dict[tabs_name]['content']).text
+        except Exception:
+            tabs_title, tabs_text = '',''
+            return tabs_title, tabs_text
+        return tabs_title, tabs_text
