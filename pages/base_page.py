@@ -13,6 +13,7 @@ class BasePage:
         self.driver.get(self.url)
 
     def element_is_visible(self, locator, timeout=5):
+        # self.go_to_element(self.element_is_present(locator))
         return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     def elements_are_visible(self, locator, timeout=5):
@@ -48,10 +49,15 @@ class BasePage:
         action = ActionChains(self.driver)
         action.context_click(element)
         action.perform()
-    
-    def action_drag_and_drop_by_offset(self, element,x_move,y_move):
+
+    def action_drag_and_drop_by_offset(self, element, x_move, y_move):
         actions = ActionChains(self.driver)
         actions.drag_and_drop_by_offset(element, x_move, y_move)
+        actions.perform()
+
+    def action_move_to_element(self, element):
+        actions = ActionChains(self.driver)
+        actions.move_to_element_with_offset(element,0,0)
         actions.perform()
 
     def switch_to_new_tab(self):
@@ -60,7 +66,7 @@ class BasePage:
     def switch_to_alert(self):
         return self.driver.switch_to.alert
 
-    def switch_to_frame(self,web_element):
+    def switch_to_frame(self, web_element):
         return self.driver.switch_to.frame(web_element)
 
     def switch_to_default_content(self):
