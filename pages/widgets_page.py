@@ -4,9 +4,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import Keys
 
 
-
 from ..generator.generator import generated_color, generated_date
-from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators, ProgressBarPageLocators, SliderPageLocators, TabsPageLocators
+from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators, ProgressBarPageLocators, SliderPageLocators, TabsPageLocators, ToolTipsPageLocators
 from .base_page import BasePage
 
 
@@ -133,7 +132,7 @@ class DatePickerPage(BasePage):
                 break
 
     def set_element_in_list(self, element, value):
-        list_item = self.elements_are_present(element)        
+        list_item = self.elements_are_present(element)
         for item in list_item:
             if item.text == value:
                 item.click()
@@ -144,9 +143,10 @@ class SliderPage(BasePage):
     locators = SliderPageLocators()
 
     def check_slider(self):
-        value_before = self.element_is_visible(self.locators.SLIDER_INPUT_VALUE).get_attribute('value')
+        value_before = self.element_is_visible(
+            self.locators.SLIDER_INPUT_VALUE).get_attribute('value')
         input = self.element_is_present(self.locators.SLIDER_INPUT)
-        self.action_drag_and_drop_by_offset(input, random.randint(0, 350), 0)      
+        self.action_drag_and_drop_by_offset(input, random.randint(0, 350), 0)
         value_after = self.element_is_visible(
             self.locators.SLIDER_INPUT_VALUE).get_attribute('value')
         return value_before, value_after
@@ -156,9 +156,10 @@ class ProgressBarPage(BasePage):
     locators = ProgressBarPageLocators()
 
     def check_progress(self):
-        progress_button = self.element_is_visible(self.locators.PROGRESS_BUTTON)
+        progress_button = self.element_is_visible(
+            self.locators.PROGRESS_BUTTON)
         progress_button.click()
-        time.sleep(random.randint(0,14))
+        time.sleep(random.randint(0, 14))
         progress_button.click()
         result = self.element_is_present(self.locators.PROGRESS_VALUE).text
         return int(result.replace('%', ''))
@@ -167,18 +168,44 @@ class ProgressBarPage(BasePage):
 class TabsPage(BasePage):
     locators = TabsPageLocators()
 
-    def check_tabs(self,tabs_name):
-        tabs_dict = {'What':{'title':self.locators.TAB_TITLE_WHAT,
-                    'content':self.locators.TAB_TEXT_WHAT},
+    def check_tabs(self, tabs_name):
+        tabs_dict = {'What': {'title': self.locators.TAB_TITLE_WHAT,
+                              'content': self.locators.TAB_TEXT_WHAT},
                      'Origin': {'title': self.locators.TAB_TITLE_ORIGIN, 'content': self.locators.TAB_TEXT_ORIGIN},
                      'Use': {'title': self.locators.TAB_TITLE_USE, 'content': self.locators.TAB_TEXT_USE},
                      'More': {'title': self.locators.TAB_TITLE_USE, 'content': self.locators.TAB_TEXT_USE}
-        }
+                     }
         try:
             self.element_is_visible(tabs_dict[tabs_name]['title']).click()
-            tabs_title = self.element_is_visible(tabs_dict[tabs_name]['title']).text
-            tabs_text = self.element_is_visible(tabs_dict[tabs_name]['content']).text
+            tabs_title = self.element_is_visible(
+                tabs_dict[tabs_name]['title']).text
+            tabs_text = self.element_is_visible(
+                tabs_dict[tabs_name]['content']).text
         except Exception:
-            tabs_title, tabs_text = '',''
+            tabs_title, tabs_text = '', ''
             return tabs_title, tabs_text
         return tabs_title, tabs_text
+
+
+class ToolTipsPage(BasePage):
+    locators = ToolTipsPageLocators()
+
+    def get_text_from_tool_tips(self, hover_elem, wait_elem):
+        element = self.element_is_present(hover_elem)
+        self.action_move_to_element(element)
+        self.element_is_visible(wait_elem)
+        time.sleep(1)
+        tool_tip_text = self.element_is_visible(self.locators.TOOL_TIPS_INNERS)
+        text = tool_tip_text.text
+        return text
+
+    def check_tool_tips(self):
+        tool_tip_text_button = self.get_text_from_tool_tips(
+            self.locators.BUTTON, self.locators.BUTTON_TOOL_TIPS)
+        tool_tip_text_field = self.get_text_from_tool_tips(
+            self.locators.FIELD, self.locators.FIELD_TOOL_TIPS)
+        tool_tip_text_contrary = self.get_text_from_tool_tips(
+            self.locators.CONTRARY_LINKS, self.locators.CONTRARY_LINKS_TOOL_TIPS)
+        tool_tip_text_section = self.get_text_from_tool_tips(
+            self.locators.SECTION_LINKS, self.locators.SECTION_LINKS_TOOL_TIPS)
+        return tool_tip_text_button, tool_tip_text_field, tool_tip_text_contrary, tool_tip_text_section
