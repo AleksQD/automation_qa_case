@@ -51,8 +51,7 @@ class TestAlertsFrameWindows:
                 driver, 'https://demoqa.com/alerts')
             alert_page.open()
             alert_text, resut_text = alert_page.check_prompt_alert()
-            resut_text = resut_text.split()[-1]
-            assert alert_text == resut_text, "Alert did not show up"
+            assert alert_text in resut_text, "Alert did not show up"
 
     class TestFrames:
 
