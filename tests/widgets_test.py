@@ -1,6 +1,6 @@
 import pytest
 
-from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, ProgressBarPage, SliderPage, TabsPage, ToolTipsPage
+from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, MenuPage, ProgressBarPage, SliderPage, TabsPage, ToolTipsPage
 
 
 # @pytest.mark.skip
@@ -94,7 +94,7 @@ class TestWidgets:
             tabs_page.open()
             tabs_list = ['What', 'Origin', 'Use']
             for tab in tabs_list:
-                tabs_title, tabs_text = tabs_page.check_tabs(tab)                
+                tabs_title, tabs_text = tabs_page.check_tabs(tab)
                 assert tab == tabs_title and len(
                     tabs_text) > 0, f"Tab {tab} does not work"
 
@@ -114,9 +114,18 @@ class TestWidgets:
             tool_tips_page = ToolTipsPage(
                 driver, 'https://demoqa.com/tool-tips')
             tool_tips_page.open()
-            button,field, contrary, section = tool_tips_page.check_tool_tips()
+            button, field, contrary, section = tool_tips_page.check_tool_tips()
             assert button == 'You hovered over the Button', "Hover missing or incorrect content"
             assert field == 'You hovered over the text field', "Hover missing or incorrect content"
             assert contrary == 'You hovered over the Contrary', "Hover missing or incorrect content"
             assert section == 'You hovered over the 1.10.32', "Hover missing or incorrect content"
 
+    # @pytest.mark.skip
+    class TestMenu:
+
+        def test_tabs(self, driver):
+            menu_page = MenuPage(
+                driver, 'https://demoqa.com/menu')
+            menu_page.open()
+            data,menu_items_len  = menu_page.check_menu()
+            assert len(data) == menu_items_len, "Menu items do not exist"
