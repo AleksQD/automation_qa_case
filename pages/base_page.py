@@ -36,6 +36,12 @@ class BasePage:
 
     def select_by_value(self, element, value):
         return Select(element).select_by_value(value)
+    
+    def select_options(self, element):
+        return Select(element).options
+    
+    def select_all_selected_items(self, element):
+        return Select(element).all_selected_options
 
     def select_by_visible_text(self, element, value):
         return Select(element).select_by_visible_text(value)
