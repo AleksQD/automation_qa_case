@@ -87,3 +87,40 @@ class ToolTipsPageLocators:
 
 class MenuPageLocators:
     MENU_ITEM_LIST = (By.CSS_SELECTOR, 'ul[id="nav"] li a')
+
+
+class SelectMenuPageLocators:
+    # select value
+    SELECT_VALUE_RESULT = (
+        By.XPATH, '//*[@id="withOptGroup"]/div/div[1]/div[1]')
+    SELECT_VALUE = (
+        By.XPATH, '//*[@id="withOptGroup"]/div')
+
+    SELECT_VALUE_ITEMS = (
+        By.CSS_SELECTOR, 'div[class*="-option"]')
+
+    # select one
+    SELECT_ONE_RESULT = (
+        By.XPATH, '//*[@id="selectOne"]/div/div[1]/div[1]')
+    SELECT_ONE = (
+        By.XPATH, '//*[@id="selectOne"]/div')
+
+    SELECT_ONE_ITEMS = (
+        By.CSS_SELECTOR, 'div[class*="-option"]')
+
+    # old select
+    SELECT_OLD = (
+        By.CSS_SELECTOR, 'select[id="oldSelectMenu"]')
+
+    # multiselect drop down
+    MULTISELECT_RESULT = (
+        By.CSS_SELECTOR, 'div[class*="-multiValue"]')
+    MULTISELECT = (
+        By.XPATH, '//*[@id="selectMenuContainer"]/div[7]/div/div/div')
+
+    MULTISELECT_ITEMS = (
+        By.CSS_SELECTOR, 'div[class*="-option"]')
+
+    # Standard multi select
+    MULTISELECT_OLD = (
+        By.CSS_SELECTOR, 'select[id="cars"]')

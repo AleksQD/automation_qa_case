@@ -1,6 +1,6 @@
 import pytest
 
-from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, MenuPage, ProgressBarPage, SliderPage, TabsPage, ToolTipsPage
+from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, MenuPage, ProgressBarPage, SelectMenuPage, SliderPage, TabsPage, ToolTipsPage
 
 
 # @pytest.mark.skip
@@ -120,12 +120,27 @@ class TestWidgets:
             assert contrary == 'You hovered over the Contrary', "Hover missing or incorrect content"
             assert section == 'You hovered over the 1.10.32', "Hover missing or incorrect content"
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     class TestMenu:
 
         def test_tabs(self, driver):
             menu_page = MenuPage(
                 driver, 'https://demoqa.com/menu')
             menu_page.open()
-            data,menu_items_len  = menu_page.check_menu()
+            data, menu_items_len = menu_page.check_menu()
             assert len(data) == menu_items_len, "Menu items do not exist"
+
+    # @pytest.mark.skip
+    class TestSelectMenu:
+
+        def test_tabs(self, driver):
+            select_page = SelectMenuPage(
+                driver, 'https://demoqa.com/select-menu')
+            select_page.open()            
+            result, check_result = select_page.check_select_menu()            
+            assert result[0] == check_result[0], "Select value does not work"
+            assert result[1] == check_result[1], "Select one does not work"
+            assert result[2] == check_result[2], "Old select does not work"
+            assert result[3] == check_result[3], "Multiselect  does not work"
+            assert result[4] == check_result[4], "Old multiselect does not work"
+            

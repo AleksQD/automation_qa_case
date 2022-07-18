@@ -5,7 +5,7 @@ from selenium.webdriver import Keys
 
 
 from ..generator.generator import generated_color, generated_date
-from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators, MenuPageLocators, ProgressBarPageLocators, SliderPageLocators, TabsPageLocators, ToolTipsPageLocators
+from ..locators.widgets_page_locators import AccordianPageLocators, AutoComplitePageLocators, DatePickerPageLocators, MenuPageLocators, ProgressBarPageLocators, SelectMenuPageLocators, SliderPageLocators, TabsPageLocators, ToolTipsPageLocators
 from .base_page import BasePage
 
 
@@ -221,3 +221,82 @@ class MenuPage(BasePage):
             self.action_move_to_element(item)
             data.append(item.text)
         return data, len(menu_items)
+
+
+class SelectMenuPage(BasePage):
+    locators = SelectMenuPageLocators()
+
+    def check_select_menu(self):
+        result = []
+        check_result  = []
+        colors = ['Voilet', 'Red', 'Blue', 'Green',
+                  'Yellow', 'Purple', 'Black', 'White', 'Indigo', 'Magenta', 'Aqua']
+        select_value = self.select_value_random_item(
+            self.locators.SELECT_VALUE, self.locators.SELECT_VALUE_ITEMS)
+        select_value_result = self.element_is_visible(self.locators.SELECT_VALUE_RESULT).text
+        result.append(select_value)
+        check_result.append(select_value_result)
+
+        select_one = self.select_value_random_item(
+            self.locators.SELECT_ONE, self.locators.SELECT_ONE_ITEMS)
+        select_one_result = self.element_is_visible(
+            self.locators.SELECT_ONE_RESULT).text
+        result.append(select_one)
+        check_result.append(select_one_result)
+        
+        random_color = random.choice(colors)
+        select_old = self.element_is_visible(self.locators.SELECT_OLD)
+        self.select_by_visible_text(select_old,random_color)
+        select_old_result_list = self.select_all_selected_items(select_old)
+        select_old_result = select_old_result_list[0].text
+        result.append(random_color)
+        check_result.append(select_old_result)
+
+        multiselect_choice = self.multiselect_random_items(
+            self.locators.MULTISELECT, self.locators.MULTISELECT_ITEMS)
+        multiselect_select_items = self.elements_are_present(self.locators.MULTISELECT_RESULT)
+        multiselect_result = [item.text for item in multiselect_select_items]
+        result.append(multiselect_choice)
+        check_result.append(multiselect_result)
+        
+        multiselect_old_choice, multiselect_old_result = self.multiselect_old_random_items(
+            self.locators.MULTISELECT_OLD)
+        result.append(multiselect_old_choice)
+        check_result.append(multiselect_old_result)
+        
+        return result, check_result
+
+
+    def select_value_random_item(self, select_locator, items_locator):        
+        self.element_is_visible(select_locator).click()
+        values = self.elements_are_present(items_locator)
+        value = random.choice(values)
+        self.go_to_element(value)
+        result = value.text
+        value.click()
+        return result
+
+    def multiselect_random_items(self, select_locators, items_locator):
+        data = []
+        select = self.element_is_visible(select_locators)
+        select.click()
+        values = self.elements_are_present(items_locator)
+        for i in range(0, random.randrange(1, len(values))):
+            self.go_to_element(values[i])
+            result = values[i].text
+            data.append(result)
+            values[i].click()
+        select.click()
+        return data
+
+    def multiselect_old_random_items(self, select_locators):
+        select_list = []
+        select = self.element_is_visible(select_locators)
+        item_list = self.select_options(select)        
+        for i in range(0, random.randrange(1, len(item_list))):
+            select_list.append(item_list[i].text)
+            self.select_by_visible_text(select, item_list[i].text)        
+        result_list = self.select_all_selected_items(select)
+        result_list = [item.text for item in result_list]
+
+        return select_list, result_list
