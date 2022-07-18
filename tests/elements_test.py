@@ -6,8 +6,9 @@ import pytest
 from ..pages.elemets_page import ButtonsPage, CheckBoxPage, DynamicPropertiesPage, LinksPage, RadioButtonPage, TextBoxPage, UploadDownloadPage, WebTablePage
 
 
+@pytest.mark.skip
 class TestElements:
-    @pytest.mark.skip
+    
     class TestTextBox:
         def test_text_box(self, driver):
             text_box_page = TextBoxPage(driver, 'https://demoqa.com/text-box')
@@ -19,7 +20,7 @@ class TestElements:
             assert curr_address == out_curr_add, "The current address does not match"
             assert perm_address == out_perm_add, "The permanent address does not match"
 
-    @pytest.mark.skip
+    
     class TestCheckBox:
         def test_check_box(self, driver):
             check_box_page = CheckBoxPage(
@@ -31,7 +32,7 @@ class TestElements:
             output_result = check_box_page.get_output_result()
             assert input_checkbox == output_result, "Checkboxes have not been selected"
 
-    @pytest.mark.skip
+    
     class TestRadioButton:
         def test_radio_button(self, driver):
             radio_button_page = RadioButtonPage(
@@ -42,7 +43,7 @@ class TestElements:
             assert click_button == output_result, "Radio-button have not been selected(maybe: random choose the NO_button  - it is disabled)"
 
     class TestWebTable:
-        @pytest.mark.skip
+        
         def test_web_table_add_person(self, driver):
             web_table_page = WebTablePage(
                 driver, 'https://demoqa.com/webtables')
@@ -51,7 +52,7 @@ class TestElements:
             table_result = web_table_page.check_new_person()
             assert new_person in table_result, "The person was not added in table"
 
-        @pytest.mark.skip
+        
         def test_web_table_search_person(self, driver):
             web_table_page = WebTablePage(
                 driver, 'https://demoqa.com/webtables')
@@ -61,7 +62,7 @@ class TestElements:
             table_result = web_table_page.check_search_person()
             assert keyword in table_result, "The person was not found in table"
 
-        @pytest.mark.skip
+        
         def test_web_table_update_person(self, driver):
             web_table_page = WebTablePage(
                 driver, 'https://demoqa.com/webtables')
@@ -72,7 +73,7 @@ class TestElements:
             row = web_table_page.check_search_person()
             assert age in row, "The person card has not been change"
 
-        @pytest.mark.skip
+        
         def test_web_table_delete_person(self, driver):
             web_table_page = WebTablePage(
                 driver, 'https://demoqa.com/webtables')
@@ -83,7 +84,7 @@ class TestElements:
             text = web_table_page.check_deleted()
             assert text == "No rows found", "The person card has not delete"
 
-        @pytest.mark.skip
+        
         def test_web_table_change_count_row(self, driver):
             web_table_page = WebTablePage(
                 driver, 'https://demoqa.com/webtables')
@@ -92,7 +93,7 @@ class TestElements:
             assert rows == [
                 5, 10, 20, 25, 50, 100], "The number of rows in table has not been changed"
 
-    @pytest.mark.skip
+    
     class TestButtonsPage:
         def test_different_click_buttons(self, driver):
             buttons_page = ButtonsPage(driver, 'https://demoqa.com/buttons')
@@ -105,14 +106,14 @@ class TestElements:
             assert one == "You have done a dynamic click", "The click_me button was not pressed"
 
     class TestLinksPage:
-        @pytest.mark.skip
+        
         def test_check_new_tab_link(self, driver):
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
             href_link, current_url = links_page.check_new_tab_simple_link()
             assert href_link == current_url, "The link is broken or url is incorrect"
 
-        @pytest.mark.skip
+        
         def test_status_code(self, driver):
             links = {'created': 201, 'no-content': 204, 'moved': 301,
                      'bad-request': 400, 'unauthorized': 401,
@@ -125,7 +126,7 @@ class TestElements:
                 assert response_code == value, "Status code wrong"
 
     class TestUploadDownloadPage:
-        @pytest.mark.skip
+        
         def test_check_upload_file(self, driver):
             upload_page = UploadDownloadPage(
                 driver, 'https://demoqa.com/upload-download')
@@ -133,7 +134,7 @@ class TestElements:
             file_name, result = upload_page.upload_file()
             assert file_name == result, "The file has not been uploaded"
 
-        @pytest.mark.skip
+        
         def test_check_dounload_file(self, driver):
             dounload_page = UploadDownloadPage(
                 driver, 'https://demoqa.com/upload-download')
@@ -143,7 +144,7 @@ class TestElements:
 
     class TestDynamicPropertiesPage:
 
-        @pytest.mark.skip
+        
         def test_check_enable_button(self, driver):
             dynamic_page = DynamicPropertiesPage(
                 driver, 'https://demoqa.com/dynamic-properties')
@@ -151,7 +152,7 @@ class TestElements:
             enable = dynamic_page.check_enable_button()
             assert enable is True, "Button did not enable after 5 second"
 
-        @pytest.mark.skip
+        
         def test_dinamic_properties(self, driver):
             dynamic_page = DynamicPropertiesPage(
                 driver, 'https://demoqa.com/dynamic-properties')
@@ -159,7 +160,7 @@ class TestElements:
             color_before, color_after = dynamic_page.check_chenged_of_color()
             assert color_before != color_after, "Colors have not been changed"
 
-        @pytest.mark.skip
+        
         def test_appear_button(self, driver):
             dynamic_page = DynamicPropertiesPage(
                 driver, 'https://demoqa.com/dynamic-properties')

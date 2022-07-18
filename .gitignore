@@ -6,4 +6,7 @@ venv
 .vscode
 *.iml
 .idea
+
+#my function test file
+datatest.py 
  
