@@ -3,10 +3,9 @@ import pytest
 from ..pages.widgets_page import AccordianPage, AutoComplitePage, DatePickerPage, MenuPage, ProgressBarPage, SelectMenuPage, SliderPage, TabsPage, ToolTipsPage
 
 
-# @pytest.mark.skip
+@pytest.mark.skip
 class TestWidgets:
 
-    @pytest.mark.skip
     class TestAccordianWidget:
         def test_accordian_widget(self, driver):
             accordian_page = AccordianPage(
@@ -22,7 +21,6 @@ class TestWidgets:
             assert second_title == 'Where does it come from?' and second_content > 0, "The accordian does not working"
             assert third_title == 'Why do we use it?' and third_content > 0, "The accordian does not working"
 
-    @pytest.mark.skip
     class TestAutoComplite:
 
         def test_fill_multy_autocomplite(self, driver):
@@ -49,7 +47,6 @@ class TestWidgets:
             color_result = auto_complite_page.check_color_in_input_single()
             assert color == color_result, "The added color are missing in the input"
 
-    @pytest.mark.skip
     class TestDatePicker:
 
         def test_chenge_date(self, driver):
@@ -66,7 +63,6 @@ class TestWidgets:
             default_date, result = date_page.select_date_and_time()
             assert default_date != result, "The date and time has not been changed"
 
-    @pytest.mark.skip
     class TestSlider:
 
         def test_chenge_slider(self, driver):
@@ -76,7 +72,6 @@ class TestWidgets:
             default_value, result = slider_page.check_slider()
             assert default_value != result, "The slider has not been changed"
 
-    @pytest.mark.skip
     class TestProgressBar:
         def test_chenge_progress(self, driver):
             progress_page = ProgressBarPage(
@@ -85,7 +80,6 @@ class TestWidgets:
             result = progress_page.check_progress()
             assert result > 0, "The progress has not been changed"
 
-    @pytest.mark.skip
     class TestTabs:
 
         def test_tabs(self, driver):
@@ -107,7 +101,6 @@ class TestWidgets:
             assert tabs_title == 'More' and len(
                 tabs_text) > 0, "Tab More does not work"
 
-    @pytest.mark.skip
     class TestToolTips:
 
         def test_tabs(self, driver):
@@ -120,7 +113,6 @@ class TestWidgets:
             assert contrary == 'You hovered over the Contrary', "Hover missing or incorrect content"
             assert section == 'You hovered over the 1.10.32', "Hover missing or incorrect content"
 
-    @pytest.mark.skip
     class TestMenu:
 
         def test_tabs(self, driver):
@@ -130,17 +122,16 @@ class TestWidgets:
             data, menu_items_len = menu_page.check_menu()
             assert len(data) == menu_items_len, "Menu items do not exist"
 
-    # @pytest.mark.skip
+    
     class TestSelectMenu:
 
         def test_tabs(self, driver):
             select_page = SelectMenuPage(
                 driver, 'https://demoqa.com/select-menu')
-            select_page.open()            
-            result, check_result = select_page.check_select_menu()            
+            select_page.open()
+            result, check_result = select_page.check_select_menu()
             assert result[0] == check_result[0], "Select value does not work"
             assert result[1] == check_result[1], "Select one does not work"
             assert result[2] == check_result[2], "Old select does not work"
             assert result[3] == check_result[3], "Multiselect  does not work"
             assert result[4] == check_result[4], "Old multiselect does not work"
-            
