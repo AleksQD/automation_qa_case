@@ -1,10 +1,7 @@
 import random
-import re
 import time
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver import Keys
 
-from ..locators.interactions_page_locators import ResizablePageLocators, SelectablePageLocators, SortablePageLocators
+from ..locators.interactions_page_locators import DroppablePageLocator, ResizablePageLocators, SelectablePageLocators, SortablePageLocators
 from .base_page import BasePage
 
 
@@ -63,28 +60,100 @@ class SelectablePage(BasePage):
 class ResizablePage(BasePage):
     locators = ResizablePageLocators()
 
-    def get_px_from_width_height(self,value_of_size):
+    def get_px_from_width_height(self, value_of_size):
         width = value_of_size.split(';')[0].split(':')[1].replace(' ', '')
         height = value_of_size.split(';')[1].split(':')[1].replace(' ', '')
         return width, height
 
-    def get_max_min_size(self,element):
+    def get_max_min_size(self, element):
         element = self.element_is_present(element)
         size = element.get_attribute('style')
         return size
 
     def chenge_size_resizable_box(self):
-        self.action_drag_and_drop_by_offset(self.element_is_visible(self.locators.RESIZABLE_BOX_HANDLE), 400, 200)
-        max_size = self.get_px_from_width_height(self.get_max_min_size(self.locators.RESIZABLE_BOX))
-        self.action_drag_and_drop_by_offset(self.element_is_visible(self.locators.RESIZABLE_BOX_HANDLE), -500, -300)
-        min_size = self.get_px_from_width_height(self.get_max_min_size(self.locators.RESIZABLE_BOX))
+        self.action_drag_and_drop_by_offset(self.element_is_visible(
+            self.locators.RESIZABLE_BOX_HANDLE), 400, 200)
+        max_size = self.get_px_from_width_height(
+            self.get_max_min_size(self.locators.RESIZABLE_BOX))
+        self.action_drag_and_drop_by_offset(self.element_is_visible(
+            self.locators.RESIZABLE_BOX_HANDLE), -500, -300)
+        min_size = self.get_px_from_width_height(
+            self.get_max_min_size(self.locators.RESIZABLE_BOX))
         return max_size, min_size
 
     def chenge_size_resizable(self):
         self.action_drag_and_drop_by_offset(self.element_is_visible(
             self.locators.RESIZABLE_HANDLE), random.randint(0, 300), random.randint(0, 200))
-        max_size = self.get_px_from_width_height(self.get_max_min_size(self.locators.RESIZABLE))
+        max_size = self.get_px_from_width_height(
+            self.get_max_min_size(self.locators.RESIZABLE))
         self.action_drag_and_drop_by_offset(self.element_is_visible(
             self.locators.RESIZABLE_HANDLE), random.randint(-200, -1), random.randint(-200, -1))
-        min_size = self.get_px_from_width_height(self.get_max_min_size(self.locators.RESIZABLE))
+        min_size = self.get_px_from_width_height(
+            self.get_max_min_size(self.locators.RESIZABLE))
         return max_size, min_size
+
+
+class DroppablePage(BasePage):
+    locators = DroppablePageLocator()
+
+    def check_simple_drop(self):
+        self.element_is_visible(self.locators.SIMPLE_TAB).click()
+        drag = self.element_is_visible(self.locators.SIMPLE_DRAG)
+        drop = self.element_is_visible(self.locators.SIMPLE_DROP)
+        self.action_drag_and_drop_to_elements(drag, drop)
+        result = drop.text
+        return result
+
+    def check_accept_drop(self, accept_tipe):
+        self.element_is_visible(self.locators.ACCEPT_TAB).click()
+        drop = self.element_is_visible(self.locators.ACCEPT_DROP)
+        if accept_tipe == 'not_accept':
+            drag = self.element_is_visible(self.locators.NOT_ACCEPTABLE)
+            self.action_drag_and_drop_to_elements(drag, drop)
+            result = drop.text
+        if accept_tipe == 'accept':
+            drag = self.element_is_visible(
+                self.locators.ACCEPTABLE)
+            self.action_drag_and_drop_to_elements(drag, drop)
+            result = drop.text
+        return result
+
+    def check_prevent_propogation(self, greedy_tipe):
+        self.element_is_visible(self.locators.PREVENT_TAB).click()
+        drag = self.element_is_visible(self.locators.PREVENT_DRAG)
+        if greedy_tipe == 'not_greedy':
+            drop = self.element_is_visible(self.locators.NOTGREEDY_INN_BOX)
+            self.action_drag_and_drop_to_elements(drag, drop)
+            result = self.element_is_visible(
+                self.locators.NOTGREEDY_OUT_BOX).text
+        if greedy_tipe == 'greedy':
+            drop = self.element_is_visible(self.locators.GREEDY_INN_BOX)
+            self.action_drag_and_drop_to_elements(drag, drop)
+            result = self.element_is_visible(
+                self.locators.GREEDY_OUT_BOX).text
+        return result.splitlines()
+
+    def check_revert(self, drag_tipe):
+        drags = {
+            'revert': self.locators.WILL_REVERT,
+            'not_revert': self.locators.NOT_REVERT
+        }
+        self.element_is_visible(self.locators.REVERT_TAB).click()
+        drop = self.element_is_visible(self.locators.REVERT_DROP)
+        drag = self.element_is_visible(drags[drag_tipe])
+        self.action_drag_and_drop_to_elements(drag, drop)
+        after_move_posicion = self.get_px_from_left_top(
+            self.get_drag_posicion(drag))
+        time.sleep(1)
+        after_revert_posicion = self.get_px_from_left_top(
+            self.get_drag_posicion(drag))
+        return after_move_posicion, after_revert_posicion
+
+    def get_px_from_left_top(self, value_of_size):
+        left = value_of_size.split(';')[1].split(':')[1].replace(' ', '')
+        top = value_of_size.split(';')[2].split(':')[1].replace(' ', '')
+        return left, top
+
+    def get_drag_posicion(self, element):
+        posicion = element.get_attribute('style')
+        return posicion
