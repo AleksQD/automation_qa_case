@@ -82,3 +82,7 @@ class BasePage:
 
     def switch_to_default_content(self):
         self.driver.switch_to.default_content()
+
+    def get_posicion_from_style(self, element):
+        posicion = element.get_attribute('style')
+        return posicion
