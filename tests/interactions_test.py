@@ -1,12 +1,12 @@
 import pytest
 
-from ..pages.interactions_page import DroppablePage, ResizablePage, SelectablePage, SortablePage
+from ..pages.interactions_page import DragblePage, DroppablePage, ResizablePage, SelectablePage, SortablePage
 
 
-# @pytest.mark.skip
+@pytest.mark.skip
 class TestInteractions:
 
-    @pytest.mark.skip
+    
     class TestSortable:
         def test_sortable_list(self, driver):
             sortable_page = SortablePage(
@@ -17,7 +17,7 @@ class TestInteractions:
             assert list_before != list_after, "The order of the list has not been changed"
             assert grid_before != grid_after, "The order of the grid has not been changed"
 
-    @pytest.mark.skip
+    
     class TestSelectable:
         def test_select(self, driver):
             selectable_page = SelectablePage(
@@ -28,7 +28,7 @@ class TestInteractions:
             assert number_active_list > 0, "No active list items"
             assert number_active_grid > 0, "No active grid items"
 
-    @pytest.mark.skip
+    
     class TestResizable:
         def test_resize(self, driver):
             resizable_page = ResizablePage(
@@ -42,7 +42,7 @@ class TestInteractions:
                 '150px', '150px'), "Minimum size not equal to '150px', '150px'"
             assert max_size != min_size_box, "Resizeble has not been changed"
 
-    @pytest.mark.skip
+    
     class TestDroppable:
         def test_droppable(self, driver):
             droppable_page = DroppablePage(
@@ -65,3 +65,20 @@ class TestInteractions:
             assert greedy_result[0] != greedy_result[1], "The greedy box is mistakenly not greedy"
             assert revert_result != revert_after_move, "The element has not reverted"
             assert not_revert_result == not_revert_after_move, "The element has reverted"
+
+    
+    class TestDragable:
+        def test_dragble(self, driver):
+            droppable_page = DragblePage(
+                driver, 'https://demoqa.com/dragabble')
+            droppable_page.open()
+            simple_before, simple_after = droppable_page.check_simple_drag()
+            asix_posicion_x, asix_posicion_y = droppable_page.check_asix_drag()
+            drag_in_box_posicion, drag_in_parent_posicion = droppable_page.check_container_drag()
+            assert simple_before != simple_after, "The element has not been dropped"
+            assert int(asix_posicion_x[1]) == 0, "Axis X restriction, does not work"
+            assert int(asix_posicion_y[0]) == 0, "Axis Y restriction, does not work"
+            assert int(
+                drag_in_box_posicion[1]) < 200, "Draggable element outside the box"
+            assert int(drag_in_parent_posicion[0]) < 150 and int(
+                drag_in_parent_posicion[1]) < 150, "Draggable element outside the parent"
